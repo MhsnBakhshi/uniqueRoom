@@ -1,0 +1,13 @@
+{
+  "name": "UniqueRoom",
+  "developer": "https://t.me/iDvMH",
+  "github": "https://github.com/mhsnbakhshi",
+  "version": "1.0.0",
+  "description": "UniqueRoom RealTime Chat App",
+  "main": "server.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [],
+  "license": "MIT"
+}
