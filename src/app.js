@@ -7,16 +7,20 @@ const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errHandler");
 const { errorResponse } = require("./utils/response");
 const authRouther = require("./modules/auth/auth.router");
+const userRouther = require("./modules/user/user.router");
 
+//? App Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
-
 app.use(setHeaders);
 app.use(express.static(path.join(__dirname, "../", "public")));
 
+//? Routhers
 app.use("/auth", authRouther);
+app.use("/user", userRouther);
 
+//? 404 Error Handler
 app.use((req, res) => {
   console.log(`This Path Not Found ${req.path}`);
 
@@ -27,6 +31,7 @@ app.use((req, res) => {
   );
 });
 
+//? Error Global Handler
 app.use(errorHandler);
 
 module.exports = app;
