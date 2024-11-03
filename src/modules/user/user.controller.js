@@ -3,6 +3,7 @@ const User = require("../../models/User");
 const Ban = require("../../models/Ban");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
+const { editUserInfoValidator } = require("./user.validators");
 
 exports.ban = async (req, res, next) => {
   try {
@@ -31,6 +32,28 @@ exports.ban = async (req, res, next) => {
     await Ban.create({ phone: deletedUser.phone });
 
     return successResponse(res, StatusCodes.OK, "User banned");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.editProfileInfo = async (req, res, next) => {
+  try {
+    const { name, email, bio } = req.body;
+    const user = await User.findOne({ _id: req.user._id });
+
+    await editUserInfoValidator.validate(
+      { name, email, bio },
+      { abortEarly: false }
+    );
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.bio = bio || user.bio;
+
+    await user.save();
+
+    return successResponse(res, StatusCodes.OK, { message: "User Updated." });
   } catch (err) {
     next(err);
   }
