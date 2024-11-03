@@ -58,3 +58,40 @@ exports.editProfileInfo = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.changeRole = async (req, res, next) => {
+  try {
+    if (!req.user.roles.includes("ADMIN")) {
+      return errorResponse(res, StatusCodes.FORBIDDEN, {
+        message: "You have not access to use this rote",
+      });
+    }
+
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return errorResponse(res, StatusCodes.BAD_REQUEST, {
+        message: "id is not valid",
+      });
+    }
+
+    const user = await User.findById(id);
+
+    if (user) {
+      if (user.roles.includes("USER")) {
+        user.roles = ["ADMIN"];
+      } else {
+        user.roles = ["USER"];
+      }
+      await user.save();
+
+      return successResponse(res, StatusCodes.OK, { message: "role changed." });
+    }
+
+    return errorResponse(res, StatusCodes.NOT_FOUND, {
+      message: "User not found from this id",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
