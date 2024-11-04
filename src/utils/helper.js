@@ -81,6 +81,7 @@ const generateToken = (userId) => {
 };
 
 
+
 module.exports = {
   getOtpRedisPattern,
   getOtpDetails,
