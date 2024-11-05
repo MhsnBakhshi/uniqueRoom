@@ -12,6 +12,10 @@ const messageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
@@ -50,27 +54,41 @@ const mediaSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-const roomSchema = new mongoose.Schema(
+const PvSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
+    sender: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+      trim: true,
+    },
+    receiver: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
       required: true,
       trim: true,
     },
 
-    image: {
-      type: String,
-      trim: true,
+    isBlocked: {
+      type: Boolean,
+      default: false,
     },
+
+    isPinned: {
+      type: Boolean,
+      default: false,
+    },
+
     messages: {
       type: [messageSchema],
       default: [],
     },
+
     media: {
       type: [mediaSchema],
       default: [],
     },
+
     locations: {
       type: [locationSchema],
       default: [],
@@ -79,28 +97,6 @@ const roomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const namespaceSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    href: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
-
-    rooms: {
-      type: [roomSchema],
-      default: [],
-    },
-  },
-  { timestamps: true }
-);
-
-const model = mongoose.model("Namespace", namespaceSchema);
+const model = mongoose.model("Pv", PvSchema);
 
 module.exports = model;
