@@ -8,6 +8,7 @@ const { errorHandler } = require("./middlewares/errHandler");
 const { errorResponse } = require("./utils/response");
 const authRouther = require("./modules/auth/auth.router");
 const userRouther = require("./modules/user/user.router");
+const namespaceRouther = require("./modules/namespace/namespace.router");
 
 //? App Middlewares
 app.use(express.urlencoded({ extended: false }));
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, "../", "public")));
 //? Routhers
 app.use("/auth", authRouther);
 app.use("/user", userRouther);
+app.use("/namespace", namespaceRouther);
 
 //? 404 Error Handler
 app.use((req, res) => {
