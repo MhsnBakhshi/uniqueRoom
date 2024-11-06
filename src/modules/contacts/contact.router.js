@@ -4,5 +4,6 @@ const controller = require("./contact.controller");
 
 const router = express.Router();
 
+router.route("/add").post(authGaurd, controller.add);
 
 module.exports = router;
