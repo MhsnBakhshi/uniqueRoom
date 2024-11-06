@@ -141,6 +141,44 @@ exports.delRoomProfile = async (req, res, next) => {
 
 exports.editRoom = async (req, res, next) => {
   try {
+    const { roomId } = req.params;
+    const { title } = req.body;
+
+    if (!isValidObjectId(roomId)) {
+      return errorResponse(res, StatusCodes.BAD_REQUEST, {
+        message: "roomId is not valid",
+      });
+    }
+
+    let existingRoom = await Namespace.findOne({ "rooms._id": roomId });
+
+    if (!existingRoom) {
+      return errorResponse(res, StatusCodes.NOT_FOUND, {
+        message: "there is no room from this id",
+      });
+    }
+
+    let room = existingRoom.rooms.id(roomId);
+
+    room.title = title || room.title;
+
+    if (req.file) {
+      try {
+        fs.unlinkSync(
+          path.join(__dirname, "..", "..", "..", "/public", room.image)
+        );
+      } catch (unlinkErr) {
+        next(unlinkErr);
+      }
+
+      room.image = `/room/images/${req.file.filename}`;
+    }
+
+    await existingRoom.save();
+
+    return successResponse(res, StatusCodes.OK, {
+      message: "room info edited",
+    });
   } catch (err) {
     next(err);
   }

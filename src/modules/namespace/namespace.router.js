@@ -17,6 +17,7 @@ router
 
 router
   .route("/room/:roomId")
-  .delete(authGaurd, controller.delRoomProfile)
   .patch(authGaurd, uploader.single("media"), controller.editRoom)
+  .delete(authGaurd, controller.delRoomProfile);
+
 module.exports = router;
