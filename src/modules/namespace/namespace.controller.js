@@ -1,7 +1,10 @@
 const Namespace = require("../../models/Namespace");
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
+const path = require("path");
 const { errorResponse, successResponse } = require("../../utils/response");
 const { createNamespaceValidator } = require("./namespace.validators");
+const { isValidObjectId } = require("mongoose");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -89,6 +92,55 @@ exports.createRoom = async (req, res, next) => {
     );
 
     return successResponse(res, StatusCodes.OK, { message: "Room created." });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.delRoomProfile = async (req, res, next) => {
+  try {
+    const { roomId } = req.params;
+
+    if (!isValidObjectId(roomId)) {
+      return errorResponse(res, StatusCodes.BAD_REQUEST, {
+        message: "roomId is not valid",
+      });
+    }
+
+    let existingRoom = await Namespace.findOne({ "rooms._id": roomId });
+
+    if (!existingRoom) {
+      return errorResponse(res, StatusCodes.NOT_FOUND, {
+        message: "there is no room from this id",
+      });
+    }
+
+    let room = existingRoom.rooms.id(roomId);
+
+    if (room && room.image) {
+      fs.unlink(
+        path.join(__dirname, "..", "..", "..", "/public", room.image),
+        (err) => next(err)
+      );
+
+      room.image = undefined;
+      await existingRoom.save();
+
+      return successResponse(res, StatusCodes.OK, {
+        message: "Profile room deleted.",
+      });
+    }
+
+    return errorResponse(res, StatusCodes.BAD_REQUEST, {
+      message: "room havent profile yet!!",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.editRoom = async (req, res, next) => {
+  try {
   } catch (err) {
     next(err);
   }
