@@ -9,6 +9,7 @@ const { errorResponse } = require("./utils/response");
 const authRouther = require("./modules/auth/auth.router");
 const userRouther = require("./modules/user/user.router");
 const namespaceRouther = require("./modules/namespace/namespace.router");
+const contactRouther = require("./modules/contacts/contact.router");
 
 //? App Middlewares
 app.use(express.urlencoded({ extended: false }));
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, "../", "public")));
 app.use("/auth", authRouther);
 app.use("/user", userRouther);
 app.use("/namespace", namespaceRouther);
+app.use("/contact", contactRouther);
 
 //? 404 Error Handler
 app.use((req, res) => {
