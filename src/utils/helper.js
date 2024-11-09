@@ -29,7 +29,7 @@ const getOtpDetails = async (phone) => {
 const generateOtpCode = async (phone, expiredTime) => {
   let otp = Math.floor(Math.random() * 999999);
 
-  otp = 123456
+  otp = 123456;
   await redis.set(getOtpRedisPattern(phone), otp, "EX", expiredTime * 60);
 
   return otp;
@@ -80,7 +80,12 @@ const generateToken = (userId) => {
   return token;
 };
 
-
+const createPaginationData = (page, limit, totalCount, collectionName) => ({
+  page,
+  limit,
+  totalPage: Math.ceil(totalCount / limit),
+  ["total" + collectionName]: totalCount,
+});
 
 module.exports = {
   getOtpRedisPattern,
@@ -89,4 +94,5 @@ module.exports = {
   generateOtpCode,
   sendSMS,
   generateToken,
+  createPaginationData,
 };
