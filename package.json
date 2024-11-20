@@ -4,11 +4,13 @@
   "github": "https://github.com/mhsnbakhshi",
   "version": "1.0.0",
   "description": "UniqueRoom RealTime Chat App",
-  "main": "./src/server.js",
+  "main": "./dist/server.js",
   "scripts": {
+    "ts:node": "ts-node ./src/server.ts",
     "dev": "dotenv -e .env nodemon"
   },
   "keywords": [],
+  "type": "module",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -24,8 +26,19 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.0",
+    "@types/http-status-codes": "^1.2.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.9.1",
+    "@types/request": "^2.48.12",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

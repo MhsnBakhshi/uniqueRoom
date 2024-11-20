@@ -1,16 +1,17 @@
-const User = require("../models/User");
-const { errorResponse } = require("../utils/response");
-const { StatusCodes } = require("http-status-codes");
-const jwt = require("jsonwebtoken");
-module.exports = async (req, res, next) => {
+import User from "../models/User";
+import { errorResponse } from "../utils/response";
+import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.headers.authorization) {
       return errorResponse(res, StatusCodes.BAD_REQUEST, {
         message: "token not provided !!",
       });
     }
-    
-    const token = req.headers.authorization.split(" ");
+
+    const token: string[] = req.headers.authorization.split(" ");
 
     if (token[0] !== "Bearer") {
       return errorResponse(res, StatusCodes.UNAUTHORIZED, {
@@ -18,7 +19,7 @@ module.exports = async (req, res, next) => {
       });
     }
 
-    const msinToken = token[1];
+    const msinToken: string = token[1];
 
     const payloadedUser = jwt.verify(msinToken, process.env.JWT_SECRET_KEY);
 

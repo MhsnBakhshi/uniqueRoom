@@ -1,4 +1,6 @@
-exports.setHeaders = (req, res, next) => {
+import { NextFunction, Request, Response } from "express";
+
+const setHeaders = (req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -8,3 +10,5 @@ exports.setHeaders = (req, res, next) => {
 
   next();
 };
+
+export { setHeaders };
