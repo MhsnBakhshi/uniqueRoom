@@ -1,12 +1,16 @@
-const fs = require("fs");
-const path = require("path");
-const multer = require("multer");
-exports.multerStorage = (destination, fileType = /jpg|png|jpeg/) => {
+import fs from "fs";
+import multer, { StorageEngine } from "multer";
+import { Request } from "express";
+
+export const multerStorage = (
+  destination: string,
+  fileType: RegExp = /jpg|png|jpeg/
+): multer.Multer => {
   if (!fs.existsSync(destination)) {
     fs.mkdirSync(destination, { recursive: true });
   }
 
-  const storage = multer.diskStorage({
+  const storage: StorageEngine = multer.diskStorage({
     destination: function (_, __, cb) {
       cb(null, destination);
     },
@@ -20,7 +24,11 @@ exports.multerStorage = (destination, fileType = /jpg|png|jpeg/) => {
     },
   });
 
-  const fileFilter = function (req, file, cb) {
+  const fileFilter = function (
+    req: Request,
+    file: Express.Multer.File,
+    cb: multer.FileFilterCallback
+  ) {
     if (fileType.test(file.mimetype)) {
       cb(null, true);
     } else {
@@ -31,7 +39,7 @@ exports.multerStorage = (destination, fileType = /jpg|png|jpeg/) => {
   const upload = multer({
     storage,
     limits: {
-      fileSize: 512_000_000,
+      fileSize: 10 * 1024 * 1024, // 10 MB,
     },
     fileFilter,
   });

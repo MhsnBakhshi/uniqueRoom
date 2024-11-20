@@ -1,11 +1,12 @@
-const request = require("request");
-const jwt = require("jsonwebtoken");
-const { redis } = require("../configs/redisConnection");
+import request from "request";
+import jwt from "jsonwebtoken";
+import { redis } from "../configs/redisConnection";
+import { ObjectId } from "mongoose";
 
-const getOtpRedisPattern = (phone) => {
+const getOtpRedisPattern = (phone: string) => {
   return `otp:${phone}`;
 };
-const getOtpDetails = async (phone) => {
+const getOtpDetails = async (phone: string) => {
   const otp = await redis.get(getOtpRedisPattern(phone));
 
   if (!otp) {
@@ -26,15 +27,15 @@ const getOtpDetails = async (phone) => {
     remainingTime: formattedTime,
   };
 };
-const generateOtpCode = async (phone, expiredTime) => {
-  let otp = Math.floor(Math.random() * 999999);
+const generateOtpCode = async (phone: string, expiredTime: number) => {
+  let otp: number = Math.floor(Math.random() * 999999);
 
   otp = 123456;
   await redis.set(getOtpRedisPattern(phone), otp, "EX", expiredTime * 60);
 
   return otp;
 };
-const cachOtpFromRedis = async (phone) => {
+const cachOtpFromRedis = async (phone: string) => {
   const otp = await redis.get(getOtpRedisPattern(phone));
 
   if (!otp) {
@@ -43,7 +44,7 @@ const cachOtpFromRedis = async (phone) => {
     return otp;
   }
 };
-const sendSMS = (phone, otp) => {
+const sendSMS = (phone: string, otp: number) => {
   request.post(
     {
       url: "http://ippanel.com/api/select",
@@ -51,7 +52,7 @@ const sendSMS = (phone, otp) => {
         op: "pattern",
         user: process.env.FARAZSMSUSER,
         pass: process.env.FARAZSMSPASSWORD,
-        fromNum: +process.env.FARAZSMSNUMBER,
+        fromNum: +process.env.FARAZSMSNUMBER!,
         toNum: phone,
         patternCode: process.env.FARAZSMSPATTERNCODE,
         inputData: [{ "login-code": otp }],
@@ -72,22 +73,27 @@ const sendSMS = (phone, otp) => {
   );
 };
 
-const generateToken = (userId) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
+const generateToken = (userId: string) => {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY!, {
     expiresIn: "365d",
   });
 
   return token;
 };
 
-const createPaginationData = (page, limit, totalCount, collectionName) => ({
+const createPaginationData = (
+  page: number,
+  limit: number,
+  totalCount: number,
+  collectionName: string
+) => ({
   page,
   limit,
   totalPage: Math.ceil(totalCount / limit),
   ["total" + collectionName]: totalCount,
 });
 
-module.exports = {
+export {
   getOtpRedisPattern,
   getOtpDetails,
   cachOtpFromRedis,

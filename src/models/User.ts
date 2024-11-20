@@ -1,10 +1,21 @@
-const mongoose = require("mongoose");
+import { model, Model, Schema } from "mongoose";
 
-const schema = new mongoose.Schema(
+export interface IUser {
+  _id: string;
+  phone: string;
+  name?: string;
+  profile?: string;
+  bio?: string;
+  email?: string;
+  roles?: string;
+}
+
+type UserModelType = Model<IUser>;
+
+const schema = new Schema<IUser>(
   {
     name: {
       type: String,
-      required: false,
       trim: true,
     },
     phone: {
@@ -15,12 +26,10 @@ const schema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: false,
       trim: true,
     },
     profile: {
       type: String,
-      required: false,
     },
     bio: {
       type: String,
@@ -37,6 +46,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const model = mongoose.model("User", schema);
+const UserModel: UserModelType = model<IUser>("User", schema);
 
-module.exports = model;
+export default UserModel;

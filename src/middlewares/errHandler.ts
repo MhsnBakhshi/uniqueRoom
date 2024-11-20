@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "yup";
 
-const errorHandler = (
+export const errorHandler = (
   err: any,
   req: Request,
   res: Response,
@@ -20,11 +20,12 @@ const errorHandler = (
     });
 
     console.log({ success: false, error: "Validation Error" });
-    return errorResponse(
+    errorResponse(
       res,
       StatusCodes.BAD_REQUEST,
       `Validation Error => ${errors}`
     );
+    return;
   }
 
   let status: number = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -32,7 +33,6 @@ const errorHandler = (
 
   console.log({ success: false, error: message });
 
-  return errorResponse(res, status, message);
+  errorResponse(res, status, message);
+  return;
 };
-
-export { errorHandler };

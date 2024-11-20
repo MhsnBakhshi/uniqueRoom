@@ -1,9 +1,33 @@
-const mongoose = require("mongoose");
+import {
+  Document,
+  Model,
+  model,
+  ObjectId,
+  PopulatedDoc,
+  Schema,
+} from "mongoose";
+import { IMedia, ILocation, IMessage } from "./Namespace";
+import { IUser } from "./User";
 
-const messageSchema = new mongoose.Schema(
+export interface IPvMessage extends IMessage {
+  isRead?: boolean;
+}
+
+export interface IPv {
+  _id: string;
+  sender: PopulatedDoc<Document<ObjectId> & IUser>;
+  receiver: PopulatedDoc<Document<ObjectId> & IUser>;
+  isBlocked?: boolean;
+  isPinned?: boolean;
+  messages: IPvMessage[];
+  media: IMedia[];
+  locations: ILocation[];
+}
+
+const messageSchema = new Schema<IPvMessage>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -20,10 +44,10 @@ const messageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const locationSchema = new mongoose.Schema(
+const locationSchema = new Schema<ILocation>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -39,10 +63,10 @@ const locationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const mediaSchema = new mongoose.Schema(
+const mediaSchema = new Schema<IMedia>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -54,16 +78,16 @@ const mediaSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const PvSchema = new mongoose.Schema(
+const PvSchema = new Schema<IPv>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
       trim: true,
     },
     receiver: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
       trim: true,
@@ -97,6 +121,7 @@ const PvSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const model = mongoose.model("Pv", PvSchema);
+type PvModelType = Model<IPv>;
+const PvModel: PvModelType = model<IPv>("Pv", PvSchema);
 
-module.exports = model;
+export default PvModel;

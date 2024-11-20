@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import app from "./app.ts";
-const http = require("http");
-const socketConnection = require("./configs/socketConnection");
-const socketHandler = require("./socket.io/socketHandler");
+import app from "./app";
+import http from "http";
+import socketConnection from "./configs/socketConnection";
+import socketHandler from "./socket.io/socketHandler";
 
-async function connectToDB() {
+async function connectToDB(): Promise<void> {
   try {
     await mongoose.connect(process.env.MONGO_URI!);
     console.log(
@@ -16,8 +16,8 @@ async function connectToDB() {
   }
 }
 
-async function startServer() {
-  const port = process.env.PORT || 4003;
+async function startServer(): Promise<void> {
+  const port: number = +process.env.PORT! || 4003;
   const httpServer = http.createServer(app);
   const io = socketConnection(httpServer);
   socketHandler(io);
@@ -27,7 +27,7 @@ async function startServer() {
   });
 }
 
-async function run() {
+async function run(): Promise<void> {
   await connectToDB();
   await startServer();
 }

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import { StatusCodes } from "http-status-codes";
@@ -27,14 +27,10 @@ app.use("/namespace", namespaceRouther);
 app.use("/contact", contactRouther);
 
 //? 404 Error Handler
-app.use((req: Request, res: Response) => {
-  console.log(`This Path Not Found ${req.path}`);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(`This Path Not Found: ${req.path}`);
 
-  return errorResponse(
-    res,
-    StatusCodes.NOT_FOUND,
-    `This Path Not Found ${req.path}`
-  );
+  errorResponse(res, StatusCodes.NOT_FOUND, `This Path Not Found: ${req.path}`);
 });
 
 //? Error Global Handler

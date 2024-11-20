@@ -1,9 +1,50 @@
-const mongoose = require("mongoose");
+import {
+  Document,
+  Model,
+  model,
+  ObjectId,
+  PopulatedDoc,
+  Schema,
+} from "mongoose";
+import { IUser } from "./User";
 
-const messageSchema = new mongoose.Schema(
+export interface IMessage {
+  _id: string;
+  sender: PopulatedDoc<Document<ObjectId> & IUser>;
+  content: string;
+}
+
+export interface IMedia {
+  _id: string;
+  sender: PopulatedDoc<Document<ObjectId> & IUser>;
+  path: string;
+}
+
+export interface ILocation {
+  _id: string;
+  sender: PopulatedDoc<Document<ObjectId> & IUser>;
+  x: number;
+  y: number;
+}
+export interface IRooms {
+  _id: string;
+  title: string;
+  image?: string;
+  messages: IMessage[];
+  media: IMedia[];
+  locations: ILocation[];
+}
+export interface INamespace {
+  _id: string;
+  title: string;
+  href: string;
+  rooms?: IRooms[];
+}
+
+const messageSchema = new Schema<IMessage>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -16,10 +57,10 @@ const messageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const locationSchema = new mongoose.Schema(
+const locationSchema = new Schema<ILocation>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -35,10 +76,10 @@ const locationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const mediaSchema = new mongoose.Schema(
+const mediaSchema = new Schema<IMedia>(
   {
     sender: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -51,7 +92,7 @@ const mediaSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const roomSchema = new mongoose.Schema(
+const roomSchema = new Schema<IRooms>(
   {
     title: {
       type: String,
@@ -79,7 +120,7 @@ const roomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const namespaceSchema = new mongoose.Schema(
+const namespaceSchema = new Schema<INamespace>(
   {
     title: {
       type: String,
@@ -101,6 +142,11 @@ const namespaceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const model = mongoose.model("Namespace", namespaceSchema);
+type NamespaceModelType = Model<INamespace>;
 
-module.exports = model;
+const NamespaceModel: NamespaceModelType = model<INamespace>(
+  "Namespace",
+  namespaceSchema
+);
+
+export default NamespaceModel;
