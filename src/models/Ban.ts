@@ -1,6 +1,6 @@
-import { model, Model, Schema } from "mongoose";
+import { Document, model, Model, Schema } from "mongoose";
 
-export interface IBan {
+export interface IBan extends Document {
   _id: string;
   phone: string;
 }

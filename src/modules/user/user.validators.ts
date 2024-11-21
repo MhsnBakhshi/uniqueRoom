@@ -1,6 +1,12 @@
-const yup = require("yup");
+import * as yup from "yup";
 
-const editUserInfoValidator = yup.object({
+interface IEditUser {
+  name?: string;
+  bio?: string;
+  email?: string;
+}
+
+export const editUserInfoValidator: yup.ObjectSchema<IEditUser> = yup.object({
   name: yup.string().max(40).trim(),
   bio: yup.string().max(55).trim(),
   email: yup
@@ -12,7 +18,3 @@ const editUserInfoValidator = yup.object({
       "Email format is not valid"
     ),
 });
-
-module.exports = {
-  editUserInfoValidator,
-};

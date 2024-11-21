@@ -9,10 +9,10 @@ import {
 } from "mongoose";
 import { IUser } from "./User";
 
-export interface IContact {
+export interface IContact extends Document {
   _id: string;
   user: PopulatedDoc<Document<ObjectId> & IUser>;
-  contacts: IContactItem[];
+  contacts: Types.DocumentArray<IContactItem>;
 }
 
 export interface IContactItem {

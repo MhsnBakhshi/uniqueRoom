@@ -1,13 +1,13 @@
-import { model, Model, Schema } from "mongoose";
+import { Document, model, Model, Schema } from "mongoose";
 
-export interface IUser {
+export interface IUser extends Document {
   _id: string;
   phone: string;
   name?: string;
   profile?: string;
   bio?: string;
   email?: string;
-  roles?: string;
+  roles?: string[];
 }
 
 type UserModelType = Model<IUser>;
