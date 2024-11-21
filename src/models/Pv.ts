@@ -5,6 +5,7 @@ import {
   ObjectId,
   PopulatedDoc,
   Schema,
+  Types,
 } from "mongoose";
 import { IMedia, ILocation, IMessage } from "./Namespace";
 import { IUser } from "./User";
@@ -13,15 +14,15 @@ export interface IPvMessage extends IMessage {
   isRead?: boolean;
 }
 
-export interface IPv {
+export interface IPv extends Document {
   _id: string;
   sender: PopulatedDoc<Document<ObjectId> & IUser>;
   receiver: PopulatedDoc<Document<ObjectId> & IUser>;
   isBlocked?: boolean;
   isPinned?: boolean;
-  messages: IPvMessage[];
-  media: IMedia[];
-  locations: ILocation[];
+  messages: Types.DocumentArray<IPvMessage>;
+  media: Types.DocumentArray<IMedia>;
+  locations: Types.DocumentArray<ILocation>;
 }
 
 const messageSchema = new Schema<IPvMessage>(

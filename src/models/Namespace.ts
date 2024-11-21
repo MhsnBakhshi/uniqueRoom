@@ -5,6 +5,7 @@ import {
   ObjectId,
   PopulatedDoc,
   Schema,
+  Types,
 } from "mongoose";
 import { IUser } from "./User";
 
@@ -30,15 +31,15 @@ export interface IRooms {
   _id: string;
   title: string;
   image?: string;
-  messages: IMessage[];
-  media: IMedia[];
-  locations: ILocation[];
+  messages: Types.DocumentArray<IMessage>;
+  media: Types.DocumentArray<IMedia>;
+  locations: Types.DocumentArray<ILocation>;
 }
-export interface INamespace {
+export interface INamespace extends Document {
   _id: string;
   title: string;
   href: string;
-  rooms?: IRooms[];
+  rooms?: Types.DocumentArray<IRooms>;
 }
 
 const messageSchema = new Schema<IMessage>(
