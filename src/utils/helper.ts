@@ -1,7 +1,6 @@
 import request from "request";
 import jwt from "jsonwebtoken";
 import { redis } from "../configs/redisConnection";
-import { ObjectId } from "mongoose";
 
 const getOtpRedisPattern = (phone: string) => {
   return `otp:${phone}`;
@@ -50,11 +49,11 @@ const sendSMS = (phone: string, otp: number) => {
       url: "http://ippanel.com/api/select",
       body: {
         op: "pattern",
-        user: process.env.FARAZSMSUSER,
-        pass: process.env.FARAZSMSPASSWORD,
+        user: process.env.FARAZSMSUSER!,
+        pass: process.env.FARAZSMSPASSWORD!,
         fromNum: +process.env.FARAZSMSNUMBER!,
         toNum: phone,
-        patternCode: process.env.FARAZSMSPATTERNCODE,
+        patternCode: process.env.FARAZSMSPATTERNCODE!,
         inputData: [{ "login-code": otp }],
       },
       json: true,

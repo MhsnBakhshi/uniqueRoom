@@ -6,11 +6,11 @@
   "description": "UniqueRoom RealTime Chat App",
   "main": "./dist/server.js",
   "scripts": {
-    "ts:node": "ts-node ./src/server.ts",
-    "dev": "dotenv -e .env nodemon"
+    "ts:node": "dotenv -e .env ts-node ./src/server.ts",
+    "dev": "dotenv -e .env nodemon",
+    "start": "dotenv -e .env nodemon"
   },
   "keywords": [],
-  "type": "module",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",

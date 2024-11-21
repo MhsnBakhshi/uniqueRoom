@@ -159,7 +159,7 @@ export const setProfile = async (
   }
 };
 
-exports.delProfile = async (
+export const delProfile = async (
   req: Request,
   res: Response,
   next: NextFunction
