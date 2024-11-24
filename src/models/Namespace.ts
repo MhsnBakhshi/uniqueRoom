@@ -19,6 +19,7 @@ export interface IMedia {
   _id: string;
   sender: PopulatedDoc<Document<ObjectId> & IUser>;
   path: string;
+  type: string;
 }
 
 export interface ILocation {
@@ -37,6 +38,7 @@ export interface IRooms {
 }
 export interface INamespace extends Document {
   _id: string;
+  creator: PopulatedDoc<Document<ObjectId> & IUser>;
   title: string;
   href: string;
   rooms?: Types.DocumentArray<IRooms>;
@@ -89,6 +91,11 @@ const mediaSchema = new Schema<IMedia>(
       required: true,
       trim: true,
     },
+    type: {
+      type: String,
+      enum: ["media", "voice"],
+      required: true,
+    },
   },
   { timestamps: true }
 );
@@ -123,6 +130,11 @@ const roomSchema = new Schema<IRooms>(
 
 const namespaceSchema = new Schema<INamespace>(
   {
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     title: {
       type: String,
       required: true,

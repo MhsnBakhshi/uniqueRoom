@@ -6,9 +6,12 @@ import { errorResponse, successResponse } from "../../utils/response";
 import { createNamespaceValidator } from "./namespace.validators";
 import { isValidObjectId } from "mongoose";
 import { NextFunction, Request, Response } from "express";
+import { costomeUserRequest } from "../../middlewares/authGaurd";
+import UserModel, { IUser } from "../../models/User";
 
 interface ICreateBody {
   title: string;
+  creator: string;
   href: string;
 }
 
@@ -43,10 +46,10 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    const { title, href } = req.body;
-
+    const { title, href, creator } = req.body;
+    const user = (req as costomeUserRequest).user;
     await createNamespaceValidator.validate(
-      { title, href },
+      { title, href, creator },
       { abortEarly: false }
     );
 
@@ -61,7 +64,27 @@ export const create = async (
       return;
     }
 
-    const namespace = await Namespace.create({ title, href });
+    if (!isValidObjectId(creator)) {
+      errorResponse(res, StatusCodes.BAD_REQUEST, {
+        messeage: "Creator Is Not ObjectId !!",
+      });
+      return;
+    }
+
+    const isExistUser: IUser | null = await UserModel.findOne({ _id: creator });
+
+    if (!isExistUser) {
+      errorResponse(res, StatusCodes.NOT_FOUND, {
+        messeage: "There Is No User From Creator Id U Sent !!",
+      });
+      return;
+    }
+
+    const namespace = await Namespace.create({
+      title,
+      href,
+      creator: user._id,
+    });
 
     successResponse(res, StatusCodes.CREATED, {
       message: "namespace created",

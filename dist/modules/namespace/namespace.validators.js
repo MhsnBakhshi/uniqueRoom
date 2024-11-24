@@ -28,4 +28,5 @@ const yup = __importStar(require("yup"));
 exports.createNamespaceValidator = yup.object({
     title: yup.string().required().trim().max(20).lowercase(),
     href: yup.string().required().trim().max(20).lowercase(),
+    creator: yup.string().required(),
 });

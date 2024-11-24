@@ -39,6 +39,11 @@ const mediaSchema = new mongoose_1.Schema({
         required: true,
         trim: true,
     },
+    type: {
+        type: String,
+        enum: ["media", "voice"],
+        required: true,
+    },
 }, { timestamps: true });
 const roomSchema = new mongoose_1.Schema({
     title: {
@@ -64,6 +69,11 @@ const roomSchema = new mongoose_1.Schema({
     },
 }, { timestamps: true });
 const namespaceSchema = new mongoose_1.Schema({
+    creator: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     title: {
         type: String,
         required: true,

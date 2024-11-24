@@ -11,6 +11,7 @@ const path_1 = __importDefault(require("path"));
 const response_1 = require("../../utils/response");
 const namespace_validators_1 = require("./namespace.validators");
 const mongoose_1 = require("mongoose");
+const User_1 = __importDefault(require("../../models/User"));
 const getAll = async (req, res, next) => {
     try {
         const namespaces = await Namespace_1.default.find({}).sort({ _id: -1 });
@@ -32,8 +33,9 @@ const getAll = async (req, res, next) => {
 exports.getAll = getAll;
 const create = async (req, res, next) => {
     try {
-        const { title, href } = req.body;
-        await namespace_validators_1.createNamespaceValidator.validate({ title, href }, { abortEarly: false });
+        const { title, href, creator } = req.body;
+        const user = req.user;
+        await namespace_validators_1.createNamespaceValidator.validate({ title, href, creator }, { abortEarly: false });
         const isExistNamespace = await Namespace_1.default.findOne({
             $or: [{ title }, { href }],
         });
@@ -43,7 +45,24 @@ const create = async (req, res, next) => {
             });
             return;
         }
-        const namespace = await Namespace_1.default.create({ title, href });
+        if (!(0, mongoose_1.isValidObjectId)(creator)) {
+            (0, response_1.errorResponse)(res, http_status_codes_1.StatusCodes.BAD_REQUEST, {
+                messeage: "Creator Is Not ObjectId !!",
+            });
+            return;
+        }
+        const isExistUser = await User_1.default.findOne({ _id: creator });
+        if (!isExistUser) {
+            (0, response_1.errorResponse)(res, http_status_codes_1.StatusCodes.NOT_FOUND, {
+                messeage: "There Is No User From Creator Id U Sent !!",
+            });
+            return;
+        }
+        const namespace = await Namespace_1.default.create({
+            title,
+            href,
+            creator: user._id,
+        });
         (0, response_1.successResponse)(res, http_status_codes_1.StatusCodes.CREATED, {
             message: "namespace created",
             namespace,

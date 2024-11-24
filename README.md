@@ -18,6 +18,7 @@ This project is still on developing, and if you have any features in mind, I wil
 ### Built With
 
  [![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://javascript.info/)
+ [![TypeScript](https://img.shields.io/badge/TypeScript-323330?style=for-the-badge&logo=typescript&logoColor=blue)](https://www.typescriptlang.org/)
  [![Node.js]( https://img.shields.io/badge/Node.js-404D59?style=for-the-badge&logo=Node.js&color=black)](https://nodejs.org/en)
  ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
  ![Socket.io](https://img.shields.io/badge/-socket.io-black?style=for-the-badge&logo=socket.io&logoColor=white)

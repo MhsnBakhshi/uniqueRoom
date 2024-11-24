@@ -1,14 +1,15 @@
 {
-  "name": "UniqueRoom",
+  "name": "UniqueRoom-Socket.Io-TypeScript-MongoDB",
   "developer": "https://t.me/iDvMH",
   "github": "https://github.com/mhsnbakhshi",
+  "linkdin": "https://www.linkedin.com/in/mhsnbakhshi",
   "version": "1.0.0",
-  "description": "UniqueRoom RealTime Chat App",
+  "description": "UniqueRoom RealTime Chat App With Socket.Io & Typescript & MongoDB",
   "main": "./dist/server.js",
   "scripts": {
-    "ts:node": "dotenv -e .env ts-node ./src/server.ts",
+    "ts:node": "dotenv -e .env ts-node src/server.ts",
     "dev": "dotenv -e .env nodemon",
-    "start": "dotenv -e .env nodemon"
+    "build": "tsc -w"
   },
   "keywords": [],
   "license": "MIT",
