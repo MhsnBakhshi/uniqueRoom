@@ -11,6 +11,8 @@ import { IMedia, ILocation, IMessage } from "./Namespace";
 import { IUser } from "./User";
 
 export interface IPvMessage extends IMessage {
+  receiver: PopulatedDoc<Document<ObjectId> & IUser>;
+  sender: PopulatedDoc<Document<ObjectId> & IUser>;
   isRead?: boolean;
 }
 
@@ -24,26 +26,6 @@ export interface IPv extends Document {
   media: Types.DocumentArray<IMedia>;
   locations: Types.DocumentArray<ILocation>;
 }
-
-const messageSchema = new Schema<IPvMessage>(
-  {
-    sender: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    content: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { timestamps: true }
-);
 
 const locationSchema = new Schema<ILocation>(
   {
@@ -76,9 +58,39 @@ const mediaSchema = new Schema<IMedia>(
       required: true,
       trim: true,
     },
+    type: {
+      type: String,
+      enum: ["media", "voice"],
+      required: true,
+    },
   },
   { timestamps: true }
 );
+const messageSchema = new Schema<IPvMessage>(
+  {
+    sender: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    receiver: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
+
 const PvSchema = new Schema<IPv>(
   {
     sender: {

@@ -9,7 +9,7 @@
   "scripts": {
     "ts:node": "dotenv -e .env ts-node src/server.ts",
     "dev": "dotenv -e .env nodemon",
-    "build": "tsc -w"
+    "build": "tsc"
   },
   "keywords": [],
   "license": "MIT",

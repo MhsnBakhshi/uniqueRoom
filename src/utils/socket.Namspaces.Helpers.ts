@@ -5,24 +5,24 @@ import UserModel, { IUser } from "../models/User";
 import path from "path";
 import fs from "fs";
 
-interface IMessageBody {
+export interface IMessageBody {
   sender: string;
   content: string;
   roomName: string;
 }
-interface ILocationBody {
+export interface ILocationBody {
   sender: string;
   location: { x: number; y: number };
   roomName: string;
 }
-interface IMediaBody {
+export interface IMediaBody {
   filename: string;
   file: any;
   sender: string;
   roomName: string;
 }
 
-interface IIsTypingBody {
+export interface IIsTypingBody {
   userID: string;
   roomName: string;
   isTyping: boolean;

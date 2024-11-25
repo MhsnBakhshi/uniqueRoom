@@ -14,6 +14,7 @@ const auth_router_1 = __importDefault(require("./modules/auth/auth.router"));
 const user_router_1 = __importDefault(require("./modules/user/user.router"));
 const namespace_router_1 = __importDefault(require("./modules/namespace/namespace.router"));
 const contact_router_1 = __importDefault(require("./modules/contacts/contact.router"));
+const pv_router_1 = __importDefault(require("./modules/pv/pv.router"));
 const app = (0, express_1.default)();
 //? App Middlewares
 app.use(express_1.default.urlencoded({ extended: false }));
@@ -26,6 +27,7 @@ app.use("/auth", auth_router_1.default);
 app.use("/user", user_router_1.default);
 app.use("/namespace", namespace_router_1.default);
 app.use("/contact", contact_router_1.default);
+app.use("/pv", pv_router_1.default);
 //? 404 Error Handler
 app.use((req, res, next) => {
     console.log(`This Path Not Found: ${req.path}`);

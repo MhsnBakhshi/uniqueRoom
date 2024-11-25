@@ -11,7 +11,7 @@ const initConnection = (io) => {
         try {
             const user = socket.user;
             if (!user) {
-                console.log("User Not Authenticated Or Token Not Provided !!");
+                console.error("User Not Authenticated Or Token Not Provided !!");
                 socket.emit("error", "User Not Authenticated Or Token Not Provided !!");
                 return;
             }
@@ -26,7 +26,7 @@ const initConnection = (io) => {
             });
         }
         catch (err) {
-            console.log({ message: "Error On Socket Connection!!", err });
+            console.error({ message: "Error On Socket Connection!!", err });
             socket.emit("error", { message: "Error On Socket Connection!!", err });
         }
     });
@@ -37,7 +37,7 @@ const getNamespaceRooms = (io) => {
         try {
             const user = socket.user;
             if (!user) {
-                console.log("User Not Authenticated Or Token Not Provided !!");
+                console.error("User Not Authenticated Or Token Not Provided !!");
                 socket.emit("error", "User Not Authenticated Or Token Not Provided !!");
                 return;
             }
@@ -70,7 +70,7 @@ const getNamespaceRooms = (io) => {
             });
         }
         catch (err) {
-            console.log({ message: "Error On Socket Connection!!", err });
+            console.error({ message: "Error On Socket Connection!!", err });
             socket.emit("error", {
                 message: "Error On GetNamespaceeRooms Connection!!",
                 err,

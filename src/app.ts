@@ -10,6 +10,7 @@ import authRouther from "./modules/auth/auth.router";
 import userRouther from "./modules/user/user.router";
 import namespaceRouther from "./modules/namespace/namespace.router";
 import contactRouther from "./modules/contacts/contact.router";
+import pvRouther from "./modules/pv/pv.router";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/auth", authRouther);
 app.use("/user", userRouther);
 app.use("/namespace", namespaceRouther);
 app.use("/contact", contactRouther);
+app.use("/pv", pvRouther);
 
 //? 404 Error Handler
 app.use((req: Request, res: Response, next: NextFunction) => {
